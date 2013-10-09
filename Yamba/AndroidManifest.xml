@@ -9,12 +9,14 @@
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name=".StatusActivity"
                   android:label="@string/app_name"
-                  android:theme="@android:style/Theme.NoTitleBar">
+                  android:theme="@style/Theme.Sherlock.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".TimeLine"/>
+        <activity android:name=".PrefsActivity" android:label="@string/titlePrefs"
+                  android:theme="@style/Theme.Sherlock.Light.NoActionBar"/>
     </application>
 </manifest>

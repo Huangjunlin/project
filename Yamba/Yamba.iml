@@ -16,6 +16,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jtwitter-yamba" level="project" />
+    <orderEntry type="module" module-name="abs 4.4.0" exported="" />
   </component>
 </module>
 

@@ -5,4 +5,13 @@
     <string name="hintText">请输入内容，不可超出140个字</string>
     <string name="update">发送更新</string>
     <string name="textCount">000</string>
+
+    <string name="titlePrefs">Prefs</string>
+    <string name="titleUsername">用户名</string>
+    <string name="titlePassword">密码</string>
+    <string name="titleApiRoot">API ROOT</string>
+
+    <string name="summaryUsername">请输入用户名</string>
+    <string name="summaryPassword">请输入密码</string>
+    <string name="summaryApiRoot">请输入服务地址</string>
 </resources>

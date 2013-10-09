@@ -1,13 +1,16 @@
 package com.king.Yamba;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
+import android.view.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,13 +18,14 @@ import android.widget.Toast;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 
-public class StatusActivity extends Activity implements View.OnClickListener, TextWatcher {
+public class StatusActivity extends Activity implements View.OnClickListener, TextWatcher, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "StatusActivity";
     private static final String URL = "http://yamba.marakana.com/api";
     EditText status_ed;
     Button update_bt;
     Twitter twitter;
     TextView textCount;
+    SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +42,77 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         status_ed.addTextChangedListener(this);
 
 
+        /*
+        写死了，下面重构了，getTwitter（）
         twitter = new Twitter("student", "password");
-        twitter.setAPIRootUrl(URL);
+        twitter.setAPIRootUrl(URL);*/
+
+        //SharedPreferences可供程序的任何部分所访问，将上下文作为this传人
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //注册监听，使用当前类作为监听器
+        prefs.registerOnSharedPreferenceChangeListener(this);
+
     }
 
-    //点击更新
+
+    //点击更新状态
     @Override
     public void onClick(View v) {
-        String status = status_ed.getText().toString();
+
+       /*
+       下面重构
+       String status = status_ed.getText().toString();
         new PostToTwitter().execute(status);
-        Log.d(TAG, "onClick");
+        Log.d(TAG, "onClick");*/
+
+        //4.0之后在主线程里面执行Http请求都会报这个错android.os.NetworkOnMainThreadException
+        try{
+        getTwitter().setStatus(status_ed.getText().toString());
+        }catch (TwitterException e){
+               Log.d(TAG, "Twitter更新状态失败");
+        }
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //从上下文中获取MenuInflater
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        //要让菜单显示出来必须返回true
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemPrefs:
+                startActivity(new Intent(this, PrefsActivity.class));
+        }
+        return true;
+    }
+
+    //选项数据变化时触发
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        //设为null使之失效，当下次试图获取它的引用时，getTwitter（）会重新创建他的实例
+        twitter = null;
+    }
+
+
+    //重构代码，添加私有方法，初始化twitter对象
+    private Twitter getTwitter(){
+        if (twitter == null){
+            String username, password, apiRoot;
+            username = prefs.getString("username","");
+            password = prefs.getString("password","");
+            apiRoot = prefs.getString("apiRoot",URL);
+            //连接到twitter.com,使用用户提供的用户名和密码
+            twitter = new Twitter(username, password);
+            twitter.setAPIRootUrl(URL);
+
+        }
+        return twitter;
     }
 
 
