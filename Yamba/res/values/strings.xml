@@ -6,10 +6,12 @@
     <string name="update">发送更新</string>
     <string name="textCount">000</string>
 
-    <string name="titlePrefs">Prefs</string>
+    <string name="titlePrefs">配置</string>
     <string name="titleUsername">用户名</string>
     <string name="titlePassword">密码</string>
     <string name="titleApiRoot">API ROOT</string>
+    <string name="titleStartService">开启服务</string>
+    <string name="titleStopService">停止服务</string>
 
     <string name="summaryUsername">请输入用户名</string>
     <string name="summaryPassword">请输入密码</string>

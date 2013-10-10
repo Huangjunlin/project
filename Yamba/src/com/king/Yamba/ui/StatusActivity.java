@@ -1,12 +1,10 @@
-package com.king.Yamba;
+package com.king.Yamba.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,17 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.king.Yamba.PrefsActivity;
+import com.king.Yamba.R;
+import com.king.Yamba.YambaApplication;
+import com.king.Yamba.service.UpdateService;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 
-public class StatusActivity extends Activity implements View.OnClickListener, TextWatcher, SharedPreferences.OnSharedPreferenceChangeListener {
+public class StatusActivity extends Activity implements View.OnClickListener, TextWatcher {
     private static final String TAG = "StatusActivity";
-    private static final String URL = "http://yamba.marakana.com/api";
     EditText status_ed;
     Button update_bt;
-    Twitter twitter;
     TextView textCount;
-    SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +46,12 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         twitter = new Twitter("student", "password");
         twitter.setAPIRootUrl(URL);*/
 
-        //SharedPreferences可供程序的任何部分所访问，将上下文作为this传人
+       /*
+       重构，通用功能写到YambaApplication.class
+       //SharedPreferences可供程序的任何部分所访问，将上下文作为this传人
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //注册监听，使用当前类作为监听器
-        prefs.registerOnSharedPreferenceChangeListener(this);
+        prefs.registerOnSharedPreferenceChangeListener(this);*/
 
     }
 
@@ -67,7 +68,8 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
 
         //4.0之后在主线程里面执行Http请求都会报这个错android.os.NetworkOnMainThreadException
         try{
-        getTwitter().setStatus(status_ed.getText().toString());
+        //getTwitter().setStatus(status_ed.getText().toString());
+            new PostToTwitter().execute(status_ed.getText().toString());
         }catch (TwitterException e){
                Log.d(TAG, "Twitter更新状态失败");
         }
@@ -88,19 +90,29 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         switch (item.getItemId()) {
             case R.id.itemPrefs:
                 startActivity(new Intent(this, PrefsActivity.class));
+                break;
+            case R.id.itemStartService:
+                startService(new Intent(this, UpdateService.class));
+                break;
+            case R.id.itemStopService:
+                stopService(new Intent(this, UpdateService.class));
+                break;
         }
         return true;
     }
 
-    //选项数据变化时触发
+    /*//选项数据变化时触发
+    重构，通用功能写到YambaApplication.class
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         //设为null使之失效，当下次试图获取它的引用时，getTwitter（）会重新创建他的实例
         twitter = null;
-    }
+    }*/
 
 
-    //重构代码，添加私有方法，初始化twitter对象
+    /*
+    通用功能写到YambaApplication.class
+    重构代码，添加私有方法，初始化twitter对象
     private Twitter getTwitter(){
         if (twitter == null){
             String username, password, apiRoot;
@@ -114,7 +126,7 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         }
         return twitter;
     }
-
+*/
 
     //异步线程，发送消息
     class PostToTwitter extends AsyncTask<String, Integer, String> {
@@ -122,7 +134,9 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         @Override
         protected String doInBackground(String... statuses) {
             try {
-                Twitter.Status status = twitter.updateStatus(statuses[0]);
+                //Twitter.Status status = twitter.updateStatus(statuses[0]);
+                YambaApplication yamba = (YambaApplication) getApplication();
+                Twitter.Status status = yamba.getTwitter().updateStatus(statuses[0]);
                 return status.text;
             } catch (TwitterException e) {
                 Log.e(TAG, e.toString());
@@ -139,7 +153,7 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
         //在后台任务执行完之后触发
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(StatusActivity.this, s, Toast.LENGTH_LONG).show();
+            Toast.makeText(StatusActivity.this, s+" :发送成功", Toast.LENGTH_LONG).show();
         }
     }
 

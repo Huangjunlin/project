@@ -1,4 +1,4 @@
-package com.king.Yamba;
+package com.king.Yamba.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
