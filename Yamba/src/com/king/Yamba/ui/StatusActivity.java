@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.king.Yamba.PrefsActivity;
 import com.king.Yamba.R;
 import com.king.Yamba.YambaApplication;
 import com.king.Yamba.service.UpdateService;
