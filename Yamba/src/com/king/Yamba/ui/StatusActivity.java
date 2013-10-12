@@ -1,7 +1,6 @@
 package com.king.Yamba.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.king.Yamba.R;
 import com.king.Yamba.YambaApplication;
-import com.king.Yamba.service.UpdateService;
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 
@@ -75,30 +73,7 @@ public class StatusActivity extends Activity implements View.OnClickListener, Te
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //从上下文中获取MenuInflater
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        //要让菜单显示出来必须返回true
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemPrefs:
-                startActivity(new Intent(this, PrefsActivity.class));
-                break;
-            case R.id.itemStartService:
-                startService(new Intent(this, UpdateService.class));
-                break;
-            case R.id.itemStopService:
-                stopService(new Intent(this, UpdateService.class));
-                break;
-        }
-        return true;
-    }
 
     /*//选项数据变化时触发
     重构，通用功能写到YambaApplication.class

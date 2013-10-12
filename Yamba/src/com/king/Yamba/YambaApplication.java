@@ -44,6 +44,10 @@ public class YambaApplication extends Application implements SharedPreferences.O
         this.serviceRunning = serviceRunning;
     }
 
+    public SharedPreferences getPrefs() {
+        return prefs;
+    }
+
 
     //应该结束前调用，可做一些清理动作吗，这里只记录Log
     @Override

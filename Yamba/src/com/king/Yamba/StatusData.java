@@ -18,7 +18,7 @@ public class StatusData {
     static final int VERSION = 1;
     static final String TABLE = "timeline";
 
-    public static final String C_ID = "_ID";
+    public static final String C_ID = "_id";
     public static final String C_CREATED_AT = "created_at";
     public static final String C_TEXT = "txt";
     public static final String C_USER = "user";
@@ -40,7 +40,7 @@ public class StatusData {
         @Override
         public void onCreate(SQLiteDatabase db) {
             Log.i(TAG, "创建数据库: " + DATABASE);
-            String sql = "create table " + TABLE + " (" + C_ID + " int primary key, "
+            String sql = "create table " + TABLE + " (" + C_ID + " integer primary key, "
                     + C_CREATED_AT + " int, " + C_USER + " text, " + C_TEXT + " text)";
             db.execSQL(sql);
 
@@ -51,7 +51,7 @@ public class StatusData {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             //一般在这里执行ALTER TABLE语句，不过这里我们不做数据库的迁移
 
-            db.execSQL("drop table if exists " + TABLE);//删除旧的数据库
+            db.execSQL("drop table  " + TABLE);//删除旧的数据库
             Log.d(TAG, "onUpgraded");
             this.onCreate(db);
         }
@@ -123,6 +123,12 @@ public class StatusData {
         }finally {
             db.close();
         }
+    }
+
+    public void delete() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(TABLE, null, null);
+        db.close();
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 import com.king.Yamba.YambaApplication;
-import com.king.Yamba.util.DbHelper;
 
 
 /**
@@ -17,7 +16,6 @@ public class UpdateService extends Service {
     static final int time = 30000;//30秒
     private Updater updater;
     private YambaApplication yamba;
-    DbHelper dbHelper;
 
     public IBinder onBind(Intent intent) {
         return null;
@@ -31,7 +29,6 @@ public class UpdateService extends Service {
         //获取YambaApplication对象的引用
         this.yamba = (YambaApplication) getApplication();
 
-        dbHelper = new DbHelper(this);
 
         Log.d(TAG, "onCreate");
     }

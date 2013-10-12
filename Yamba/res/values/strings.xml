@@ -12,8 +12,12 @@
     <string name="titleApiRoot">API ROOT</string>
     <string name="titleStartService">开启服务</string>
     <string name="titleStopService">停止服务</string>
+    <string name="titleTimeline">好友状态</string>
+    <string name="titlePurge">清空数据</string>
+    <string name="titleStatus">更新状态</string>
 
     <string name="summaryUsername">请输入用户名</string>
     <string name="summaryPassword">请输入密码</string>
     <string name="summaryApiRoot">请输入服务地址</string>
+    <string name="sql1">CREATE TABLE timeline ( _id integer primary key AUTOINCREMENT,created_at integer, source text, txt text, user text );</string>
 </resources>

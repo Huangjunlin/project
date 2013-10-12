@@ -3,8 +3,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
        <item android:id="@+id/itemPrefs" android:title="@string/titlePrefs"
              android:icon="@drawable/setting"></item>
-    <item android:id="@+id/itemStartService" android:title="@string/titleStartService"
+    <item android:id="@+id/itemTimeline" android:title="@string/titleTimeline"
+          android:icon="@drawable/setting"></item>
+    <item android:id="@+id/itemPurge" android:title="@string/titlePurge"
+          android:icon="@drawable/setting"></item>
+    <item android:id="@+id/itemStatus" android:title="@string/titleStatus"
+          android:icon="@drawable/setting"></item>
+
+    <item android:id="@+id/itemToggleService" android:title="@string/titleStartService"
+          android:icon="@drawable/setting"></item>
+    <!--<item android:id="@+id/itemStartService" android:title="@string/titleStartService"
           android:icon="@drawable/setting"></item>
     <item android:id="@+id/itemStopService" android:title="@string/titleStopService"
-          android:icon="@drawable/setting"></item>
+          android:icon="@drawable/setting"></item>-->
 </menu>
